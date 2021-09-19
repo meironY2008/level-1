@@ -1,38 +1,63 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function App() {
+  // ref for the canvas
   const drawingRef = useRef(null);
   const contextRef = useRef(null);
+  //time of click
+  let time;
   useEffect(() => {
     const canvas = drawingRef.current;
-    canvas.width = 400;
-    canvas.height = 400;
-
-    canvas.style.width = `400px`;
-    canvas.style.height = `400px`;
-
+    canvas.width = 1400;
+    canvas.height = 1000;
+    //canvas size
+    canvas.style.width = `700px`;
+    canvas.style.height = `500px`;
+    // libe info
     const context = canvas.getContext("2d");
     context.scale(2, 2);
+    //shape of line
     context.lineCap = "round";
+    //color of line
     context.strokeStyle = "black";
+    //width of line
     context.lineWidth = 3;
     contextRef.current = context;
   }, []);
+//time of press
   const startDrawing = () => {
+    time = Date.now();
+  };
+  const releaseHandeler = () => {
+   
+    // take release time tap
+    let secondTime = Date.now();
     //draw lines
     contextRef.current.beginPath();
-    contextRef.current.moveTo(125, 125);
-    contextRef.current.lineTo(125, 45);
-    contextRef.current.lineTo(45, 125);
+    //draw first line
+    //get bigger by press
+    contextRef.current.moveTo(125, 125 - ((secondTime - time) % 50));
+    //draw second line
+    contextRef.current.lineTo(
+      125 - ((secondTime - time) % 500),
+      45  + ((secondTime - time) % 500)
+    );
+    //draw third line
+    contextRef.current.lineTo(
+      45  + ((secondTime - time) % 500),
+      125 - ((secondTime - time) % 500)
+    );
     contextRef.current.closePath();
     contextRef.current.stroke();
   };
-
   return (
+    //element to click on
     <div
-      onClick={startDrawing}
-      style={{ height: "500px", width: "500px", background: "green" }}
+      onMouseDown={startDrawing}
+      onMouseUp={releaseHandeler}
+      style={{ height: "500px", width: "700px", background: "green" }}
     >
+      {/* canvas element */}
       <canvas ref={drawingRef} />
     </div>
   );
