@@ -24,7 +24,7 @@ function App() {
     context.lineWidth = 3;
     contextRef.current = context;
   }, []);
-
+//time of press
   const startDrawing = () => {
     time = Date.now();
   };
@@ -36,6 +36,7 @@ function App() {
     //draw lines
     contextRef.current.beginPath();
     //draw first line
+    //get bigger by press
     contextRef.current.moveTo(offsetX, offsetY - ((secondTime - time) % 50));
     //draw second line
     contextRef.current.lineTo(
