@@ -8,36 +8,44 @@ function App() {
   let time;
   useEffect(() => {
     const canvas = drawingRef.current;
-    canvas.width = 400;
-    canvas.height = 400;
-
-    canvas.style.width = `400px`;
-    canvas.style.height = `400px`;
+    canvas.width = 1400;
+    canvas.height = 1000;
+    //canvas size
+    canvas.style.width = `700px`;
+    canvas.style.height = `500px`;
     // libe info
     const context = canvas.getContext("2d");
     context.scale(2, 2);
+    //shape of line
     context.lineCap = "round";
+    //color of line
     context.strokeStyle = "black";
+    //width of line
     context.lineWidth = 3;
     contextRef.current = context;
   }, []);
-  
+
   const startDrawing = () => {
     time = Date.now();
   };
-  const releaseHandeler = () => {
+  const releaseHandeler = ({ nativeEvent }) => {
+    //cordinates of the click
+    const { offsetX, offsetY } = nativeEvent;
     // take release time tap
     let secondTime = Date.now();
     //draw lines
     contextRef.current.beginPath();
-    contextRef.current.moveTo(125, 125 - ((secondTime - time) % 50));
+    //draw first line
+    contextRef.current.moveTo(offsetX, offsetY - ((secondTime - time) % 50));
+    //draw second line
     contextRef.current.lineTo(
-      125 - ((secondTime - time) % 500),
-      45 + ((secondTime - time) % 500)
+      offsetX - ((secondTime - time) % 500),
+      offsetY - 80 + ((secondTime - time) % 500)
     );
+    //draw third line
     contextRef.current.lineTo(
-      45 + ((secondTime - time) % 500),
-      125 - ((secondTime - time) % 500)
+      offsetX - 80 + ((secondTime - time) % 500),
+      offsetY - ((secondTime - time) % 500)
     );
     contextRef.current.closePath();
     contextRef.current.stroke();
@@ -47,7 +55,7 @@ function App() {
     <div
       onMouseDown={startDrawing}
       onMouseUp={releaseHandeler}
-      style={{ height: "500px", width: "500px", background: "green" }}
+      style={{ height: "500px", width: "700px", background: "green" }}
     >
       {/* canvas element */}
       <canvas ref={drawingRef} />
