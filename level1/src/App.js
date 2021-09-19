@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef,} from "react";
 
 function App() {
+  const treangeleArray = [];
   // ref for the canvas
   const drawingRef = useRef(null);
   const contextRef = useRef(null);
@@ -33,10 +34,12 @@ function App() {
     const { offsetX, offsetY } = nativeEvent;
     // take release time tap
     let secondTime = Date.now();
+    //set color of line
+    contextRef.current.strokeStyle = "black";
     //draw lines
     contextRef.current.beginPath();
     //draw first line
-    contextRef.current.moveTo(offsetX, offsetY - ((secondTime - time) % 50));
+    contextRef.current.moveTo(offsetX, offsetY - ((secondTime - time) % 60));
     //draw second line
     contextRef.current.lineTo(
       offsetX - ((secondTime - time) % 500),
@@ -49,16 +52,52 @@ function App() {
     );
     contextRef.current.closePath();
     contextRef.current.stroke();
+    //push last triangle into array
+    treangeleArray.push({
+      pointA: {
+        x: offsetX,
+        y: offsetY - ((secondTime - time) % 60),
+      },
+      pointB: {
+        x: offsetX - ((secondTime - time) % 500),
+        y: offsetY - 80 + ((secondTime - time) % 500),
+      },
+      pointC: {
+        x: offsetX - 80 + ((secondTime - time) % 500),
+        y: offsetY - ((secondTime - time) % 500),
+      },
+    });
+  };
+  const handeleDeleteButton = () => {
+    // pop last triangle from array
+    const lastTriangle = treangeleArray.pop();
+    console.log(lastTriangle);
+    if (lastTriangle == null) return;
+    //change color of line
+    contextRef.current.strokeStyle = "green";
+    contextRef.current.beginPath();
+    //delete first line
+    contextRef.current.moveTo(lastTriangle.pointA.x, lastTriangle.pointA.y);
+    //delete second line
+    contextRef.current.lineTo(lastTriangle.pointB.x, lastTriangle.pointB.y);
+    //delete third line
+    contextRef.current.lineTo(lastTriangle.pointC.x, lastTriangle.pointC.y);
+    contextRef.current.closePath();
+    contextRef.current.stroke();
   };
   return (
     //element to click on
-    <div
-      onMouseDown={startDrawing}
-      onMouseUp={releaseHandeler}
-      style={{ height: "500px", width: "700px", background: "green" }}
-    >
-      {/* canvas element */}
-      <canvas ref={drawingRef} />
+    <div>
+      <div
+        onMouseDown={startDrawing}
+        onMouseUp={releaseHandeler}
+        style={{ height: "500px", width: "700px", background: "green" }}
+      >
+        {/* canvas element */}
+        <canvas ref={drawingRef} />
+      </div>
+      {/* delete button */}
+      <button onClick={handeleDeleteButton}>click for delete</button>
     </div>
   );
 }
