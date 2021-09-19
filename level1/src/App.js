@@ -19,6 +19,7 @@ function App() {
     contextRef.current = context;
   }, []);
   const startDrawing = () => {
+    //draw lines
     contextRef.current.beginPath();
     contextRef.current.moveTo(125, 125);
     contextRef.current.lineTo(125, 45);
