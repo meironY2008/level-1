@@ -54,54 +54,57 @@ function App() {
   }, []);
 
   const startDrawing = () => {
+    //time of start drawing
     time = Date.now();
   };
   const releaseHandeler = ({ nativeEvent }) => {
-    //cordinates of the click
-    const { offsetX, offsetY } = nativeEvent;
-    // take release time tap
-    let secondTime = Date.now();
-    //set color of line
+    //change color of line
     contextRef.current.strokeStyle = "black";
-    //draw lines
-    contextRef.current.beginPath();
-    //draw first line
-    contextRef.current.moveTo(offsetX, offsetY - ((secondTime - time) % 60));
-    //draw second line
-    contextRef.current.lineTo(
-      offsetX - ((secondTime - time) % 500),
-      offsetY - 80 + ((secondTime - time) % 500)
-    );
-    //draw third line
-    contextRef.current.lineTo(
-      offsetX - 80 + ((secondTime - time) % 500),
-      offsetY - ((secondTime - time) % 500)
-    );
-    contextRef.current.closePath();
-    contextRef.current.stroke();
-    //push last triangle into array
-    treangeleArray.push({
-      pointA: {
-        x: offsetX,
-        y: offsetY - ((secondTime - time) % 60),
-      },
-      pointB: {
-        x: offsetX - ((secondTime - time) % 500),
-        y: offsetY - 80 + ((secondTime - time) % 500),
-      },
-      pointC: {
-        x: offsetX - 80 + ((secondTime - time) % 500),
-        y: offsetY - ((secondTime - time) % 500),
-      },
-    });
+    contextRef.current.lineWidth = 3;
+   //cordinates of the click
+   const { offsetX, offsetY } = nativeEvent;
+   let secondTime = Date.now();
+   // calculate the height we need
+   let height = (100 + ((secondTime - time) % 500)) * (Math.sqrt(3) / 2);
+   //draw lines
+   contextRef.current.beginPath();
+   //first point
+   contextRef.current.moveTo(offsetX, offsetY);
+   //draw line to second point
+   contextRef.current.lineTo(offsetX + ((secondTime - time) % 500), offsetY + height);
+   //draw line to third point
+   contextRef.current.lineTo(offsetX - ((secondTime - time) % 500), offsetY + height);
+   //draw line to first point
+   contextRef.current.lineTo(offsetX, offsetY);
+   contextRef.current.closePath();
+   contextRef.current.stroke();
+   //push last triangle into array
+   treangeleArray.push({
+     //point a coordinates
+     pointA: {
+       x: offsetX,
+       y: offsetY ,
+     },
+     //point b coordinates
+     pointB: {
+       x: offsetX + ((secondTime - time) % 500),
+       y: offsetY + height,
+     },
+     //point c coordinates
+     pointC: {
+       x: offsetX - ((secondTime - time) % 500),
+       y: offsetY + height,
+     },
+   });
   };
   const handeleDeleteButton = () => {
     // pop last triangle from array
     const lastTriangle = treangeleArray.pop();
-    //if array of triangles empty he will do nothing
+    console.log(lastTriangle);
     if (lastTriangle == null) return;
     //change color of line
     contextRef.current.strokeStyle = "green";
+    contextRef.current.lineWidth = 7;
     contextRef.current.beginPath();
     //delete first line
     contextRef.current.moveTo(lastTriangle.pointA.x, lastTriangle.pointA.y);
@@ -109,11 +112,9 @@ function App() {
     contextRef.current.lineTo(lastTriangle.pointB.x, lastTriangle.pointB.y);
     //delete third line
     contextRef.current.lineTo(lastTriangle.pointC.x, lastTriangle.pointC.y);
-    //end of draw
     contextRef.current.closePath();
-    // draw the lines
     contextRef.current.stroke();
-  };
+   };
 
   const handleSaveButton = () => {
     //save item to local storage
@@ -138,5 +139,7 @@ function App() {
     </div>
   );
 }
+
+
 
 export default App;
