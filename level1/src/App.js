@@ -24,26 +24,27 @@ function App() {
     context.lineWidth = 3;
     contextRef.current = context;
   }, []);
-//time of press
+
   const startDrawing = () => {
+    //set time of pressing
     time = Date.now();
   };
   const releaseHandeler = () => {
     // take release time tap
     let secondTime = Date.now();
     // calculate the height we need
-    let height = (100+((secondTime - time) % 500)) * (Math.sqrt(3)/2);
+    let height = (100 + ((secondTime - time) % 500)) * (Math.sqrt(3) / 2);
     //draw lines
     contextRef.current.beginPath();
     //first point
     contextRef.current.moveTo(150, 150);
     //draw line to second point
-    contextRef.current.lineTo(150 +((secondTime - time) % 500), 150+ height);
+    contextRef.current.lineTo(150 + ((secondTime - time) % 500), 150 + height);
     //draw line to third point
     contextRef.current.lineTo(150 - ((secondTime - time) % 500), 150 + height);
     //draw line to first point
     contextRef.current.lineTo(150, 150);
-    
+
     contextRef.current.closePath();
     contextRef.current.stroke();
   };
