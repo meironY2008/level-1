@@ -55,19 +55,23 @@ function App() {
     //push last triangle into array
     treangeleArray.push({
       pointA: {
+        //point a cordinates
         x: offsetX,
         y: offsetY - ((secondTime - time) % 60),
       },
       pointB: {
+        //point b cordinates
         x: offsetX - ((secondTime - time) % 500),
         y: offsetY - 80 + ((secondTime - time) % 500),
       },
       pointC: {
+        //point c cordinates
         x: offsetX - 80 + ((secondTime - time) % 500),
         y: offsetY - ((secondTime - time) % 500),
       },
     });
   };
+  // delete by draw a new treangle with color green
   const handeleDeleteButton = () => {
     // pop last triangle from array
     const lastTriangle = treangeleArray.pop();
