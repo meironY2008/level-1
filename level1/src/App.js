@@ -10,7 +10,6 @@ function App() {
     const canvas = drawingRef.current;
     canvas.width = 400;
     canvas.height = 400;
-
     canvas.style.width = `400px`;
     canvas.style.height = `400px`;
 //canvas characteristics
@@ -25,14 +24,18 @@ function App() {
     contextRef.current = context;
   }, []);
   const startDrawing = () => {
+
+    let height = 100 * (Math.sqrt(3)/2);
     //draw lines
     contextRef.current.beginPath();
-    //draw first line
-    contextRef.current.moveTo(125, 125);
-    //draw second line
-    contextRef.current.lineTo(125, 45);
-    //draw third line
-    contextRef.current.lineTo(45, 125);
+    //first point
+    contextRef.current.moveTo(80, 80);
+    //draw line to second point
+    contextRef.current.lineTo(130, 80+height);
+    //draw line to third point
+    contextRef.current.lineTo(30, 80+height);
+    //draw line to first point
+    contextRef.current.lineTo(80, 80);
     contextRef.current.closePath();
     contextRef.current.stroke();
   };
