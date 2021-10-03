@@ -44,6 +44,7 @@ function App() {
     contextRef.current.lineTo(offsetX - ((secondTime - time) % 500), offsetY + height);
     //draw line to first point
     contextRef.current.lineTo(offsetX, offsetY);
+    // close the canvas and draw on the screen
     contextRef.current.closePath();
     contextRef.current.stroke();
   };
