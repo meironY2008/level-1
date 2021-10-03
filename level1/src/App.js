@@ -6,13 +6,13 @@ function App() {
   const contextRef = useRef(null);
   // create of the canvas
   useEffect(() => {
-    //canvas size
     const canvas = drawingRef.current;
+    //canvas size
     canvas.width = 400;
     canvas.height = 400;
     canvas.style.width = `400px`;
     canvas.style.height = `400px`;
-//canvas characteristics
+    //canvas characteristics
     const context = canvas.getContext("2d");
     context.scale(2, 2);
     //shape of line
