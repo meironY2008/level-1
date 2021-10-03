@@ -13,7 +13,7 @@ function App() {
     //canvas size
     canvas.style.width = `700px`;
     canvas.style.height = `500px`;
-    // libe info
+    // line info
     const context = canvas.getContext("2d");
     context.scale(2, 2);
     //shape of line
@@ -24,30 +24,26 @@ function App() {
     context.lineWidth = 3;
     contextRef.current = context;
   }, []);
-//time of press
+  //time of press
   const startDrawing = () => {
     time = Date.now();
   };
   const releaseHandeler = ({ nativeEvent }) => {
     //cordinates of the click
     const { offsetX, offsetY } = nativeEvent;
-    // take release time tap
     let secondTime = Date.now();
+    // calculate the height we need
+    let height = (100 + ((secondTime - time) % 500)) * (Math.sqrt(3) / 2);
     //draw lines
     contextRef.current.beginPath();
-    //draw first line
-    //get bigger by press
-    contextRef.current.moveTo(offsetX, offsetY - ((secondTime - time) % 50));
-    //draw second line
-    contextRef.current.lineTo(
-      offsetX - ((secondTime - time) % 500),
-      offsetY - 80 + ((secondTime - time) % 500)
-    );
-    //draw third line
-    contextRef.current.lineTo(
-      offsetX - 80 + ((secondTime - time) % 500),
-      offsetY - ((secondTime - time) % 500)
-    );
+    //first point
+    contextRef.current.moveTo(offsetX, offsetY);
+    //draw line to second point
+    contextRef.current.lineTo(offsetX + ((secondTime - time) % 500), offsetY + height);
+    //draw line to third point
+    contextRef.current.lineTo(offsetX - ((secondTime - time) % 500), offsetY + height);
+    //draw line to first point
+    contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.closePath();
     contextRef.current.stroke();
   };
